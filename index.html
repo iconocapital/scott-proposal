@@ -169,7 +169,15 @@ h3 { font-size: 18px; line-height: 1.3; }
 .panel-header {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
+}
+.panel-mark {
+  display: inline-flex;
+  color: var(--color-on-teal);
+  line-height: 0;
+}
+.panel-mark svg {
+  display: block;
 }
 .prepared {
   font-family: var(--font-mono);
@@ -327,8 +335,11 @@ h3 { font-size: 18px; line-height: 1.3; }
   flex-shrink: 0;
   margin-top: 1px;
 }
-.panel-cta {
+.panel-cta-wrap {
+  position: relative;
   margin-top: 8px;
+}
+.panel-cta {
   background: var(--color-accent-aqua);
   color: var(--color-primary-teal-deep);
   padding: 14px 20px;
@@ -340,10 +351,113 @@ h3 { font-size: 18px; line-height: 1.3; }
   transition: transform 0.2s, box-shadow 0.2s;
   display: block;
   letter-spacing: 0.01em;
+  position: relative;
+  overflow: visible;
 }
 .panel-cta:hover {
   transform: translateY(-1px);
   box-shadow: 0 8px 22px rgba(78,184,188,0.4);
+}
+.panel-cta.celebrating {
+  animation: ctaPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes ctaPop {
+  0%   { transform: scale(1); }
+  20%  { transform: scale(0.92); }
+  45%  { transform: scale(1.15); box-shadow: 0 0 0 14px rgba(78,184,188,0.18), 0 12px 30px rgba(78,184,188,0.5); }
+  100% { transform: scale(1); }
+}
+
+/* Confetti origin - sits over the CTA */
+.confetti-origin {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 0; height: 0;
+  pointer-events: none;
+  z-index: 50;
+}
+.confetti-piece {
+  position: absolute;
+  top: 0; left: 0;
+  width: 10px;
+  height: 14px;
+  border-radius: 2px;
+  opacity: 0;
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+.confetti-piece.round {
+  border-radius: 50%;
+  width: 9px;
+  height: 9px;
+}
+.confetti-piece.streamer {
+  width: 4px;
+  height: 18px;
+  border-radius: 1px;
+}
+@keyframes confettiBurst {
+  0% {
+    opacity: 0;
+    transform: translate(0, 0) rotate(0deg) scale(0.6);
+  }
+  10% {
+    opacity: 1;
+    transform: translate(calc(var(--dx) * 0.3), calc(var(--dy) * 0.3 - 20px)) rotate(calc(var(--rot) * 0.3)) scale(1);
+  }
+  60% {
+    opacity: 1;
+    transform: translate(calc(var(--dx) * 0.85), calc(var(--dy) * 0.85 - 5px)) rotate(calc(var(--rot) * 0.85)) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0.7);
+  }
+}
+.confetti-piece.animate {
+  animation: confettiBurst var(--dur, 1400ms) cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+}
+
+/* Confetti note - the cute message that appears */
+.celebration-note {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translate(-50%, -100%);
+  background: var(--color-on-teal);
+  color: var(--color-primary-teal-deep);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 51;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+.celebration-note::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--color-on-teal);
+}
+.celebration-note.show {
+  animation: noteRise 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes noteRise {
+  0%   { opacity: 0; transform: translate(-50%, -80%) scale(0.6); }
+  15%  { opacity: 1; transform: translate(-50%, -110%) scale(1.1); }
+  25%  { opacity: 1; transform: translate(-50%, -105%) scale(1); }
+  80%  { opacity: 1; transform: translate(-50%, -120%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -160%) scale(0.95); }
 }
 
 /* ============ EVIDENCE COLUMN ============ */
@@ -558,136 +672,148 @@ h3 { font-size: 18px; line-height: 1.3; }
   margin: 0;
 }
 
-/* Rationale block - paragraph beneath delta */
-.rationale {
-  background: var(--color-surface-sand);
-  border-left: 3px solid var(--color-accent-aqua);
-  padding: 22px 26px;
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
-  margin-top: 28px;
-}
-.rationale h4 {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  margin-bottom: 8px;
-}
-.rationale p {
-  font-size: 14.5px;
-  line-height: 1.65;
-  color: var(--color-text-body);
-  margin: 0;
-}
-.rationale p strong {
-  color: var(--color-primary-teal-dark);
-  font-weight: 600;
-}
-
-/* Plans grid (Plan A/B/C) */
-#scenarios { margin-bottom: 64px; }
-.plans-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin-top: 24px;
-}
-.plan-card {
-  background: var(--color-surface-white);
-  border: 1px solid var(--color-neutral-soft);
-  border-radius: var(--radius-md);
-  padding: 22px 22px 24px 22px;
-}
-.plan-card.featured {
-  border-color: var(--color-accent-aqua);
-  background: linear-gradient(180deg, rgba(78,184,188,0.04) 0%, var(--color-surface-white) 60%);
-  position: relative;
-}
-.plan-card.featured::before {
-  content: "Highest leverage";
-  position: absolute;
-  top: -10px; left: 18px;
-  background: var(--color-accent-aqua);
-  color: var(--color-primary-teal-deep);
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  padding: 4px 10px;
-  border-radius: var(--radius-pill);
-  font-weight: 600;
-  text-transform: uppercase;
-}
-.plan-card .plan-tag {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  color: var(--color-accent-aqua);
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  font-weight: 500;
-}
-.plan-card h3 {
-  color: var(--color-primary-teal-dark);
-  font-size: 19px;
-  margin-bottom: 10px;
-  line-height: 1.25;
-}
-.plan-card .plan-desc {
-  font-size: 13.5px;
-  color: var(--color-text-muted);
-  line-height: 1.6;
-  margin-bottom: 16px;
-}
-.plan-card .plan-metric {
-  padding-top: 14px;
-  border-top: 1px solid var(--color-neutral-soft);
-}
-.plan-card .plan-metric .metric-label {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  color: var(--color-text-muted);
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-.plan-card .plan-metric .metric-value {
-  font-family: var(--font-serif);
-  font-weight: 700;
-  font-size: 26px;
-  color: var(--color-primary-teal-dark);
-  letter-spacing: -0.02em;
-  line-height: 1.05;
-}
-
 /* Scope section */
 #scope { margin-bottom: 64px; }
+.scope-hint {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: var(--color-accent-aqua);
+  text-transform: uppercase;
+  margin-top: 4px;
+  margin-bottom: -8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.scope-hint::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: var(--color-accent-aqua);
+  border-radius: 50%;
+  animation: scopeHintPulse 2s infinite;
+}
+@keyframes scopeHintPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
 .scope-list {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
   margin-top: 28px;
 }
+/* Flip card container — perspective for 3D effect */
 .scope-item {
+  position: relative;
+  perspective: 1400px;
+  min-height: 188px;
+  cursor: pointer;
+  user-select: none;
+}
+.scope-item-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 188px;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-style: preserve-3d;
+}
+.scope-item.flipped .scope-item-inner {
+  transform: rotateY(180deg);
+}
+.scope-face {
+  position: absolute;
+  inset: 0;
   display: flex;
-  gap: 14px;
-  align-items: flex-start;
-  padding: 16px 18px;
   background: var(--color-surface-white);
   border: 1px solid var(--color-neutral-soft);
   border-radius: var(--radius-md);
+  padding: 16px 18px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+  overflow: hidden;
 }
+.scope-face.front {
+  gap: 14px;
+  align-items: flex-start;
+}
+.scope-face.back {
+  transform: rotateY(180deg);
+  flex-direction: column;
+  background: linear-gradient(155deg, var(--color-primary-teal) 0%, var(--color-primary-teal-deep) 100%);
+  color: var(--color-on-teal);
+  border-color: var(--color-primary-teal-dark);
+  padding: 18px 20px;
+}
+.scope-face.back::before {
+  content: '';
+  position: absolute;
+  top: -50px; right: -50px;
+  width: 140px; height: 140px;
+  background: radial-gradient(circle, var(--color-accent-aqua-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+.scope-item:hover .scope-face.front,
+.scope-item:focus-visible .scope-face.front {
+  border-color: var(--color-accent-aqua);
+  box-shadow: 0 6px 22px rgba(78,184,188,0.18);
+  transform: translateY(-1px);
+}
+.scope-item:focus-visible {
+  outline: none;
+}
+.scope-item .flip-cue {
+  position: absolute;
+  top: 12px; right: 14px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  color: var(--color-text-quiet);
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: color 0.2s, transform 0.2s;
+  z-index: 2;
+}
+.scope-item:hover .flip-cue,
+.scope-item:focus-visible .flip-cue {
+  color: var(--color-accent-aqua);
+}
+.scope-item .flip-cue::after {
+  content: "↻";
+  font-size: 12px;
+  transition: transform 0.4s var(--ease-out);
+}
+.scope-item:hover .flip-cue::after {
+  transform: rotate(180deg);
+}
+.scope-item.flipped .flip-cue {
+  color: var(--color-on-teal-muted);
+}
+.scope-item.flipped .flip-cue::after {
+  transform: rotate(360deg);
+}
+
+/* Front face content */
 .scope-item .scope-icon {
-  width: 32px; height: 32px;
+  width: 34px; height: 34px;
   border-radius: var(--radius-sm);
   background: var(--color-accent-aqua-soft);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
   font-size: 16px;
+  transition: transform 0.25s, background 0.25s;
+}
+.scope-item:hover .scope-icon {
+  transform: scale(1.08) rotate(-4deg);
+  background: var(--color-accent-aqua);
 }
 .scope-item .scope-text {
   flex: 1;
+  padding-right: 36px;
 }
 .scope-item .scope-title {
   font-weight: 600;
@@ -711,6 +837,137 @@ h3 { font-size: 18px; line-height: 1.3; }
   color: var(--color-success);
   font-weight: 600;
   text-transform: uppercase;
+}
+
+/* Back face content */
+.scope-face.back .back-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  color: var(--color-accent-aqua);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+.scope-face.back .back-title {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--color-on-teal);
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+  margin-bottom: 10px;
+  padding-right: 64px;
+  position: relative;
+  z-index: 1;
+}
+.scope-face.back .back-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+}
+.scope-face.back .back-list li {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--color-on-teal-muted);
+  padding-left: 14px;
+  position: relative;
+}
+.scope-face.back .back-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--color-accent-aqua);
+  font-weight: 700;
+}
+
+/* Accounts flow chart section */
+#accounts { margin-bottom: 64px; }
+.accounts-chart-wrap {
+  margin-top: 28px;
+  padding: 32px 24px 24px 24px;
+  background: var(--color-surface-sand);
+  border: 1px solid var(--color-neutral-soft);
+  border-radius: var(--radius-md);
+  position: relative;
+  overflow: hidden;
+}
+.accounts-chart-wrap .col-labels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-bottom: 20px;
+  padding: 0 6px;
+}
+.accounts-chart-wrap .col-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.accounts-chart-wrap .col-label.current { color: var(--color-text-muted); }
+.accounts-chart-wrap .col-label.proposed { color: var(--color-accent-aqua); }
+.accounts-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.accounts-totals {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  margin-top: 16px;
+  padding: 16px 6px 0 6px;
+  border-top: 1px dashed var(--color-neutral-stone);
+}
+.accounts-totals .total {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.accounts-totals .total-label {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+.accounts-totals .total-value {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--color-primary-teal-dark);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+.accounts-totals .total.proposed .total-value {
+  color: var(--color-accent-aqua);
+}
+.accounts-caption {
+  margin-top: 20px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  text-align: center;
+  font-style: italic;
+}
+.accounts-caption strong {
+  color: var(--color-primary-teal-dark);
+  font-style: normal;
+  font-weight: 600;
+}
+@media (max-width: 720px) {
+  .accounts-chart-wrap .col-labels,
+  .accounts-totals {
+    gap: 16px;
+  }
 }
 
 /* Team section */
@@ -869,49 +1126,63 @@ h3 { font-size: 18px; line-height: 1.3; }
   line-height: 1.55;
   margin: 0;
 }
-
-/* Closing block */
-.closing {
-  margin-top: 56px;
-  padding: 32px 36px;
-  background: linear-gradient(135deg, var(--color-primary-teal-dark) 0%, var(--color-primary-teal-deep) 100%);
-  border-radius: var(--radius-md);
-  color: var(--color-on-teal);
+.step.has-cta {
+  border-color: var(--color-accent-aqua);
+  background: linear-gradient(180deg, rgba(78,184,188,0.05) 0%, var(--color-surface-white) 70%);
+}
+.invoice-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 12px 20px;
+  background: var(--color-accent-aqua);
+  color: var(--color-primary-teal-deep);
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  transition: transform 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out);
   position: relative;
   overflow: hidden;
 }
-.closing::before {
+.invoice-cta::before {
   content: '';
   position: absolute;
-  top: -60px; right: -60px;
-  width: 240px; height: 240px;
-  background: radial-gradient(circle, var(--color-accent-aqua-glow) 0%, transparent 70%);
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.35) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.3s;
   pointer-events: none;
 }
-.closing .closing-eyebrow {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  color: var(--color-accent-aqua);
-  text-transform: uppercase;
-  margin-bottom: 14px;
-  position: relative; z-index: 1;
+.invoice-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(78,184,188,0.4);
 }
-.closing p {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 17px;
-  line-height: 1.65;
-  margin: 0 0 16px 0;
-  position: relative; z-index: 1;
+.invoice-cta:hover::before {
+  opacity: 1;
 }
-.closing .signature {
+.invoice-cta-arrow {
+  transition: transform 0.25s var(--ease-out);
+  font-weight: 700;
+}
+.invoice-cta:hover .invoice-cta-arrow {
+  transform: translateX(3px);
+}
+.invoice-cta-note {
+  display: block;
+  margin-top: 8px;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 9.5px;
   letter-spacing: 0.14em;
-  color: var(--color-on-teal-muted);
+  color: var(--color-text-quiet);
   text-transform: uppercase;
-  position: relative; z-index: 1;
+}
+.invoice-cta-note::before {
+  content: '🔒';
+  margin-right: 4px;
+  font-size: 10px;
 }
 
 /* Footer */
@@ -977,7 +1248,6 @@ body.show-mobile-sticky .mobile-sticky { transform: translateY(0); }
   .scope-list { grid-template-columns: 1fr; }
   .delta-bars { grid-template-columns: 1fr; }
   .delta-callouts { grid-template-columns: 1fr; }
-  .plans-grid { grid-template-columns: 1fr; }
   .steps { grid-template-columns: 1fr; }
   .team-grid { grid-template-columns: 1fr; }
   .mobile-sticky { display: flex; }
@@ -1019,7 +1289,12 @@ body.show-mobile-sticky .mobile-sticky { transform: translateY(0); }
   <aside class="panel">
     <div class="panel-inner">
       <div class="panel-header">
-        <span class="wordmark on-dark">iconoclastic</span>
+        <span class="panel-mark" aria-label="Iconoclastic">
+          <svg width="14" height="40" viewBox="0 0 43 125" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M34.4 25.11C34.4 25.3861 34.1744 25.6105 33.8983 25.6052C20.1566 25.3409 9.05917 14.2435 8.79486 0.501769C8.78955 0.225678 9.0139 0 9.29004 0H33.9C34.1762 0 34.4 0.223858 34.4 0.5V25.11Z" fill="currentColor"/>
+            <path d="M2.62084 124.53C2.19519 124.53 2.11073 123.927 2.52 123.81C4.92 123.09 6.54 122.01 7.38 120.57C8.34 119.13 8.82 117.21 8.82 114.81V56.7005C8.82 54.1805 8.34 52.3205 7.38 51.1205C5.85566 48.7251 4.74293 47.9987 2.56836 47.0995C1.70394 46.7421 1.73825 45.516 2.62792 45.227L33.5256 35.193C33.8486 35.0881 34.18 35.3289 34.18 35.6685V114.99C34.18 117.39 34.6 119.31 35.44 120.75C36.4 122.19 38.02 123.27 40.3 123.99C40.6043 124.082 40.5385 124.53 40.2207 124.53H2.62084Z" fill="currentColor"/>
+          </svg>
+        </span>
         <div class="prepared">Andrew & Janelle<br>Scott · Panico</div>
       </div>
 
@@ -1058,12 +1333,16 @@ body.show-mobile-sticky .mobile-sticky { transform: translateY(0); }
         <li>Active multi-year tax planning, including the 2025 amendment workflow</li>
         <li>Portfolio implementation across all four retirement accounts</li>
         <li>S-Corp coordination — salary sizing, profit-sharing, basis tracking</li>
-        <li>Roth strategy: backdoor for both, mega-backdoor capacity review</li>
+        <li>Business as a leverage tool — deductible structures, family employment, sale readiness</li>
         <li>Quarterly rebalancing, drift monitoring, and tax-loss harvesting</li>
         <li>Plan Premier tax-prep credit ($450/yr)</li>
       </ul>
 
-      <a href="mailto:chris@iconocapital.com?subject=Scott%20%26%20Panico%20Proposal:%20Ready%20to%20Move%20Forward" class="panel-cta">Get Started →</a>
+      <div class="panel-cta-wrap">
+        <a href="mailto:chris@iconocapital.com?subject=Scott%20%26%20Panico%20Proposal:%20Ready%20to%20Move%20Forward" class="panel-cta" id="panelCta">Get Started →</a>
+        <div class="celebration-note" id="celebrationNote"></div>
+        <div class="confetti-origin" id="confettiOrigin" aria-hidden="true"></div>
+      </div>
     </div>
   </aside>
 
@@ -1112,7 +1391,7 @@ body.show-mobile-sticky .mobile-sticky { transform: translateY(0); }
         <div class="delta-callout">
           <div class="delta-label">Annual Tax Stack</div>
           <div class="delta-value" data-count="39" data-prefix="$" data-suffix="K">$39K</div>
-          <div class="delta-desc">Profit-sharing + Roth-to-Traditional + HSA, layered every year.</div>
+          <div class="delta-desc">Solo 401(k) max + S-Corp profit-sharing + HSA + 403(b) optimization, layered.</div>
         </div>
         <div class="delta-callout">
           <div class="delta-label">Lifetime Tax-Adjusted Lift</div>
@@ -1139,132 +1418,350 @@ body.show-mobile-sticky .mobile-sticky { transform: translateY(0); }
           <p class="bar-detail"><strong>+2.1 points of expected return</strong> by moving excess cash into U.S. equities. Risk score 79 — matches your stated tolerance. Same plan, deployed deliberately over 6–12 months.</p>
         </div>
       </div>
-
-      <div class="rationale">
-        <h4>Why the proposed allocation</h4>
-        <p>You're 34 and 33. You have a <strong>30+ year horizon</strong>, two earners, an S-Corp generating six figures, and a Monte Carlo result that already runs at <strong>100% success</strong>. The biggest risk in your portfolio today isn't volatility — it's the <strong>cash drag</strong> consuming roughly $31K per year of opportunity cost. Right Capital projects the proposed plan reaches <strong>$38.7M at age 100</strong> vs. <strong>$24.7M</strong> on the current path — a $14M lift on top of dramatically lower lifetime taxes. We deploy gradually so it never feels like a single big bet.</p>
-      </div>
-    </section>
-
-    <!-- ===== Scenarios / Plans A B C ===== -->
-    <section id="scenarios">
-      <span class="eyebrow">Three Plays</span>
-      <h2 class="section-title">Where the planning effort lives.</h2>
-      <p class="section-lede">You don't have a single problem — you have three independent wins, each with a different timeline and risk profile. Here's how we'd sequence them.</p>
-
-      <div class="plans-grid">
-        <div class="plan-card">
-          <div class="plan-tag">Play A · Now</div>
-          <h3>File the 2025 amendment.</h3>
-          <p class="plan-desc">Form 8995-A shows $0 QBI deduction despite $411,902 of qualified business income — the K-1 (Box 17 Code V) failed to report Andrew's $235K in W-2 wages. Correcting it pulls you back from the 37% bracket to 35% and triggers a federal refund. (After further investigation, NY won't refund — federal only.)</p>
-          <div class="plan-metric">
-            <div class="metric-label">Estimated federal refund</div>
-            <div class="metric-value">~$29,000</div>
-          </div>
-        </div>
-
-        <div class="plan-card featured">
-          <div class="plan-tag">Play B · 2026 Open Enrollment</div>
-          <h3>Re-engineer the 2026 tax stack.</h3>
-          <p class="plan-desc">Three coordinated moves. Add S-Corp <strong>employer profit-sharing</strong> (up to $58,750/yr on Andrew's $235K salary). Switch Janelle from <strong>Roth 403(b) → Traditional</strong> at her 43.85% combined marginal rate. Max <strong>family HSA</strong> ($6,550 of remaining capacity).</p>
-          <div class="plan-metric">
-            <div class="metric-label">Combined annual savings</div>
-            <div class="metric-value">~$38,940</div>
-          </div>
-        </div>
-
-        <div class="plan-card">
-          <div class="plan-tag">Play C · Ongoing</div>
-          <h3>Build a systematic deployment engine.</h3>
-          <p class="plan-desc">Deploy the existing $425K cash buffer into the 85/15 target over 6–12 months. Then redirect the <strong>$350,818/yr surplus</strong> Right Capital identifies in 2026 cash flow into a coordinated taxable account — instead of letting it pile up in Marcus again. Cash drag drops 27% → 3.7%; expected return climbs 7.3% → 9.4%.</p>
-          <div class="plan-metric">
-            <div class="metric-label">Annual saving redirected</div>
-            <div class="metric-value">~$351K/yr</div>
-          </div>
-        </div>
-      </div>
     </section>
 
     <!-- ===== Quote block - bridge to scope ===== -->
     <div class="quote-block">
-      <p class="quote">I want to be wise with this money so I can keep doing what I love and not have to worry about making an enormous amount of money to not have to go back. I just don't want to go back.</p>
-      <div class="attrib">Andrew · Intro Call · May 2026</div>
+      <p class="quote">Janelle and I both need to find a balance between saving and being conservative with our money and making sure we're not putting everything into the future — and enjoying life now, and feeling financial freedom now.</p>
+      <div class="attrib">Andrew · Proposal Call · May 2026</div>
     </div>
 
     <!-- ===== Scope ===== -->
     <section id="scope">
       <span class="eyebrow">Scope of Work</span>
       <h2 class="section-title">What we'll actually do.</h2>
-      <p class="section-lede">Eight workstreams, sequenced by urgency. Every line is grounded in something already in the 2025 return, the Right Capital plan, or the discovery call.</p>
+      <span class="scope-hint">Tap any card to flip it · See what the work actually looks like</span>
 
       <div class="scope-list">
-        <div class="scope-item">
-          <div class="scope-icon">📄</div>
-          <div class="scope-text">
-            <div class="scope-title">2025 Amendment Coordination</div>
-            <p class="scope-desc">Coordinate the corrected 1120-S, amended K-1, and 1040-X with the S-Corp preparer and Emerald Tax. We project-manage so you don't have to.</p>
-            <span class="scope-value">~$29K federal refund</span>
+
+        <div class="scope-item" tabindex="0" role="button" aria-label="2025 Amendment Coordination — tap to see details">
+          <div class="scope-item-inner">
+            <div class="scope-face front">
+              <span class="flip-cue">Tap</span>
+              <div class="scope-icon">📄</div>
+              <div class="scope-text">
+                <div class="scope-title">2025 Amendment Coordination</div>
+                <p class="scope-desc">Coordinate the corrected 1120-S, amended K-1, and 1040-X with the S-Corp preparer and Emerald Tax. We project-manage so you don't have to.</p>
+                <span class="scope-value">~$29K federal refund</span>
+              </div>
+            </div>
+            <div class="scope-face back">
+              <span class="flip-cue">Back</span>
+              <div class="back-eyebrow">How it actually goes</div>
+              <div class="back-title">From discovery to direct deposit, ~60 days.</div>
+              <ul class="back-list">
+                <li>Coordinate corrected 1120-S + amended K-1 with the S-Corp preparer</li>
+                <li>File the 1040-X with $82,380 QBI deduction reinstated</li>
+                <li>Track the refund through IRS WMAR portal — typically 8–16 weeks</li>
+                <li>Audit the 2026 K-1 prep to prevent a repeat</li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div class="scope-item">
-          <div class="scope-icon">🧮</div>
-          <div class="scope-text">
-            <div class="scope-title">S-Corp Profit-Sharing 401(k)</div>
-            <p class="scope-desc">Confirm 401go's capacity for employer contributions and design the 2026 contribution sizing on Andrew's $235K W-2.</p>
-            <span class="scope-value">Up to $25K/yr savings</span>
+        <div class="scope-item" tabindex="0" role="button" aria-label="S-Corp Profit-Sharing 401(k) — tap to see details">
+          <div class="scope-item-inner">
+            <div class="scope-face front">
+              <span class="flip-cue">Tap</span>
+              <div class="scope-icon">🧮</div>
+              <div class="scope-text">
+                <div class="scope-title">S-Corp Profit-Sharing 401(k)</div>
+                <p class="scope-desc">Re-size Andrew's W-2 to <strong>$190K</strong> — the threshold that maxes the solo 401(k) at the <strong>$73,000/yr combined limit</strong> (employee + employer). Coordinate with 401go's plan capacity.</p>
+                <span class="scope-value">$73K/yr tax-deferred</span>
+              </div>
+            </div>
+            <div class="scope-face back">
+              <span class="flip-cue">Back</span>
+              <div class="back-eyebrow">The $190K math</div>
+              <div class="back-title">$190K W-2 → $73K combined contribution.</div>
+              <ul class="back-list">
+                <li>$23,500 employee deferral (Andrew defers max)</li>
+                <li>$47,500 employer profit-sharing (25% of $190K)</li>
+                <li>$2,000 to hit the $73K 415(c) combined limit</li>
+                <li>Net federal + NY tax savings ~$32K/yr at the 37%/6.85% stack</li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div class="scope-item">
-          <div class="scope-icon">🔁</div>
-          <div class="scope-text">
-            <div class="scope-title">Janelle's 403(b): Roth → Traditional</div>
-            <p class="scope-desc">At 43.85% combined marginal rate, traditional pre-tax wins decisively. Coordinate the change with U of R benefits at open enrollment.</p>
-            <span class="scope-value">~$10,305/yr savings</span>
+        <div class="scope-item" tabindex="0" role="button" aria-label="Adding Janelle to the Business — tap to see details">
+          <div class="scope-item-inner">
+            <div class="scope-face front">
+              <span class="flip-cue">Tap</span>
+              <div class="scope-icon">👥</div>
+              <div class="scope-text">
+                <div class="scope-title">Adding Janelle to the Business</div>
+                <p class="scope-desc">Model the path to bringing Janelle onto Andrew Scott Art Inc payroll — and the exit from Strong. Income coordination, benefits trade-off, retirement plan expansion.</p>
+                <span class="scope-value">Optionality, not obligation</span>
+              </div>
+            </div>
+            <div class="scope-face back">
+              <span class="flip-cue">Back</span>
+              <div class="back-eyebrow">What we'd model</div>
+              <div class="back-title">A live scenario she could walk into.</div>
+              <ul class="back-list">
+                <li>Reasonable comp for Janelle's role (admin, ops, IP licensing)</li>
+                <li>Health insurance replacement: Strong → S-Corp HRA / marketplace</li>
+                <li>Retirement plan expansion: 401(k) match for Janelle on the S-Corp plan</li>
+                <li>Lost benefits (pension, group LTD) priced against the gain</li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div class="scope-item">
-          <div class="scope-icon">💧</div>
-          <div class="scope-text">
-            <div class="scope-title">Cash Deployment Framework</div>
-            <p class="scope-desc">Tiered reserve design (operating / opportunity / deployable), 6–12 month DCA into the 85/15 target, and a systematic engine for the $350K/yr surplus going forward.</p>
-            <span class="scope-value">~$351K/yr redirected</span>
+        <div class="scope-item" tabindex="0" role="button" aria-label="Business as a Leverage Tool — tap to see details">
+          <div class="scope-item-inner">
+            <div class="scope-face front">
+              <span class="flip-cue">Tap</span>
+              <div class="scope-icon">🚀</div>
+              <div class="scope-text">
+                <div class="scope-title">Business as a Leverage Tool</div>
+                <p class="scope-desc">Use the S-Corp deliberately, not defensively. Deductible structures, retirement layering, family employment, eventual sale planning — the business as a tax-strategy engine.</p>
+                <span class="scope-value">High-leverage, multi-year</span>
+              </div>
+            </div>
+            <div class="scope-face back">
+              <span class="flip-cue">Back</span>
+              <div class="back-eyebrow">Levers we'd pull</div>
+              <div class="back-title">The S-Corp is the most powerful tool in the kit.</div>
+              <ul class="back-list">
+                <li>Accountable plan for home office, equipment, vehicle</li>
+                <li>Augusta Rule (§280A) — 14 days of tax-free business rental</li>
+                <li>S-Corp owned vehicle or equipment depreciation strategies</li>
+                <li>QSBS / §1202 readiness if you ever sell the brand or IP</li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div class="scope-item">
-          <div class="scope-icon">📊</div>
-          <div class="scope-text">
-            <div class="scope-title">Unified Portfolio Strategy</div>
-            <p class="scope-desc">Treat Andrew's 401(k), Traditional IRA, Old 401(k), and Janelle's 403(b) as one portfolio. Asset-locate for tax efficiency. Quarterly rebalancing.</p>
+        <div class="scope-item" tabindex="0" role="button" aria-label="Cash Surplus Transfer — tap to see details">
+          <div class="scope-item-inner">
+            <div class="scope-face front">
+              <span class="flip-cue">Tap</span>
+              <div class="scope-icon">💧</div>
+              <div class="scope-text">
+                <div class="scope-title">Cash Surplus Transfer · $500K</div>
+                <p class="scope-desc">Execute the $500K move from high-yield savings into a coordinated taxable investment account, allocated to the Icono 85/15 target. Build the operating reserve underneath it.</p>
+                <span class="scope-value">$500K deployed</span>
+              </div>
+            </div>
+            <div class="scope-face back">
+              <span class="flip-cue">Back</span>
+              <div class="back-eyebrow">Sequencing the $500K</div>
+              <div class="back-title">Deliberate, not dumped.</div>
+              <ul class="back-list">
+                <li>Operating reserve sized to 6 months of expenses (kept in HYSA)</li>
+                <li>$500K transferred to taxable brokerage in tranches over 6–12 months</li>
+                <li>Allocated to Icono 85/15 — U.S. core, international, fixed income sleeve</li>
+                <li>Tax-loss harvesting active from day one</li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div class="scope-item">
-          <div class="scope-icon">🏦</div>
-          <div class="scope-text">
-            <div class="scope-title">Backdoor & Mega-Backdoor Roth</div>
-            <p class="scope-desc">Both of you are well past the direct-contribution phaseout. Build the tax-free bucket annually. Clean up the 2024 Traditional IRA basis.</p>
+        <div class="scope-item" tabindex="0" role="button" aria-label="Unified Portfolio Strategy — tap to see details">
+          <div class="scope-item-inner">
+            <div class="scope-face front">
+              <span class="flip-cue">Tap</span>
+              <div class="scope-icon">📊</div>
+              <div class="scope-text">
+                <div class="scope-title">Unified Portfolio Strategy</div>
+                <p class="scope-desc">Treat Andrew's 401(k), Traditional IRA, Old 401(k), and Janelle's 403(b) as one portfolio. Asset-locate for tax efficiency. Quarterly rebalancing across all four.</p>
+              </div>
+            </div>
+            <div class="scope-face back">
+              <span class="flip-cue">Back</span>
+              <div class="back-eyebrow">One portfolio, four accounts</div>
+              <div class="back-title">Stop optimizing each account in isolation.</div>
+              <ul class="back-list">
+                <li>Bonds + REITs → tax-deferred accounts (high-tax-drag assets)</li>
+                <li>U.S. + international equities → taxable brokerage + 403(b) growth sleeve</li>
+                <li>Quarterly drift monitoring, threshold-based rebalancing</li>
+                <li>Coordinated with the $500K taxable deployment, not parallel to it</li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div class="scope-item">
-          <div class="scope-icon">🛡️</div>
-          <div class="scope-text">
-            <div class="scope-title">Insurance Review & Gap Analysis</div>
-            <p class="scope-desc">Andrew shows $0 life benefit on his primary policy; Janelle has group-only life. Address the gaps before the first child arrives.</p>
+        <div class="scope-item" tabindex="0" role="button" aria-label="Spending Plan, Not a Budget — tap to see details">
+          <div class="scope-item-inner">
+            <div class="scope-face front">
+              <span class="flip-cue">Tap</span>
+              <div class="scope-icon">🌿</div>
+              <div class="scope-text">
+                <div class="scope-title">Spending Plan, Not a Budget</div>
+                <p class="scope-desc">The plan already runs at 100% success. The harder question: <strong>if you had to spend an extra $50K–$100K/yr you currently don't, where would it go?</strong> Travel, gifting, comfort, art investment — permission, not restriction.</p>
+                <span class="scope-value">+$50K–$100K/yr permission</span>
+              </div>
+            </div>
+            <div class="scope-face back">
+              <span class="flip-cue">Back</span>
+              <div class="back-eyebrow">The Die-With-Zero conversation</div>
+              <div class="back-title">Your problem is under-spending, not over-spending.</div>
+              <ul class="back-list">
+                <li>Identify what you'd buy if you knew the plan supported it</li>
+                <li>Build a "permission line" — recurring discretionary you don't have to defend</li>
+                <li>Travel cadence, gifting strategy, lifestyle upgrades — costed in</li>
+                <li>Re-test the plan every year against the new spending baseline</li>
+              </ul>
+            </div>
           </div>
         </div>
 
-        <div class="scope-item">
-          <div class="scope-icon">🎯</div>
-          <div class="scope-text">
-            <div class="scope-title">Variable Income Cash Flow System</div>
-            <p class="scope-desc">Automated tax reserves and a single-income stress test for the "algorithm slows down" scenario you flagged.</p>
+        <div class="scope-item" tabindex="0" role="button" aria-label="Insurance Review & Gap Analysis — tap to see details">
+          <div class="scope-item-inner">
+            <div class="scope-face front">
+              <span class="flip-cue">Tap</span>
+              <div class="scope-icon">🛡️</div>
+              <div class="scope-text">
+                <div class="scope-title">Insurance Review & Gap Analysis</div>
+                <p class="scope-desc">Andrew shows $0 life benefit on his primary policy; Janelle has group-only life and disability. Quantify what those gaps would cost the household and what individual coverage actually buys at your ages.</p>
+                <span class="scope-value">Cheapest to fix now</span>
+              </div>
+            </div>
+            <div class="scope-face back">
+              <span class="flip-cue">Back</span>
+              <div class="back-eyebrow">The full audit</div>
+              <div class="back-title">Independent of any product sale.</div>
+              <ul class="back-list">
+                <li>Term life sizing — both lives, 20–25 yr ladders</li>
+                <li>Individual long-term disability for Andrew (no group via S-Corp)</li>
+                <li>Umbrella liability — $2M+ at this net worth</li>
+                <li>P&C audit on the Cape Cod rental and primary home</li>
+              </ul>
+            </div>
           </div>
         </div>
+
+      </div>
+    </section>
+
+    <!-- ===== Accounts Flow Chart ===== -->
+    <section id="accounts">
+      <span class="eyebrow">Where the Accounts Go</span>
+      <h2 class="section-title">Four scattered accounts → three coordinated ones.</h2>
+      <p class="section-lede">Today your assets sit across three institutions with no shared strategy. Here's what we'd consolidate, what we'd open, and where the cash actually lands.</p>
+
+      <div class="accounts-chart-wrap">
+        <div class="col-labels">
+          <span class="col-label current">Today · Scattered</span>
+          <span class="col-label proposed">With Icono · Coordinated</span>
+        </div>
+
+        <svg class="accounts-svg" viewBox="0 0 760 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Account consolidation flow chart">
+          <defs>
+            <!-- Soft gradient for proposed boxes -->
+            <linearGradient id="propBoxGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="rgba(78,184,188,0.10)"/>
+              <stop offset="100%" stop-color="rgba(78,184,188,0.02)"/>
+            </linearGradient>
+            <!-- Arrowhead -->
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#4EB8BC"/>
+            </marker>
+            <marker id="arrow-muted" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(28,83,85,0.4)"/>
+            </marker>
+          </defs>
+
+          <!-- ============ LEFT COLUMN — Current State ============ -->
+
+          <!-- L1: Traditional IRA -->
+          <g class="acct-box current">
+            <rect x="20" y="20" width="260" height="64" rx="8" fill="#FFFEFB" stroke="#DAD8D2" stroke-width="1.5"/>
+            <text x="36" y="44" font-family="Outfit, sans-serif" font-size="13" font-weight="600" fill="#1C5355">Andrew's Traditional IRA</text>
+            <text x="36" y="60" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(28,83,85,0.6)" letter-spacing="0.5">PRINCIPAL · $57,801</text>
+            <circle cx="264" cy="52" r="5" fill="rgba(28,83,85,0.35)"/>
+          </g>
+
+          <!-- L2: Old 401(k) -->
+          <g class="acct-box current">
+            <rect x="20" y="108" width="260" height="64" rx="8" fill="#FFFEFB" stroke="#DAD8D2" stroke-width="1.5"/>
+            <text x="36" y="132" font-family="Outfit, sans-serif" font-size="13" font-weight="600" fill="#1C5355">Andrew's Old 401(k)</text>
+            <text x="36" y="148" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(28,83,85,0.6)" letter-spacing="0.5">PRINCIPAL · $21,755</text>
+            <circle cx="264" cy="140" r="5" fill="rgba(28,83,85,0.35)"/>
+          </g>
+
+          <!-- L3: Marcus Savings -->
+          <g class="acct-box current">
+            <rect x="20" y="196" width="260" height="64" rx="8" fill="#FFFEFB" stroke="#DAD8D2" stroke-width="1.5"/>
+            <text x="36" y="220" font-family="Outfit, sans-serif" font-size="13" font-weight="600" fill="#1C5355">Marcus High-Yield Savings</text>
+            <text x="36" y="236" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(28,83,85,0.6)" letter-spacing="0.5">GOLDMAN · $475,000</text>
+            <circle cx="264" cy="228" r="5" fill="rgba(28,83,85,0.35)"/>
+          </g>
+
+          <!-- L4: S-Corp business cash flow (annual) -->
+          <g class="acct-box current">
+            <rect x="20" y="284" width="260" height="64" rx="8" fill="#FFFEFB" stroke="#DAD8D2" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <text x="36" y="308" font-family="Outfit, sans-serif" font-size="13" font-weight="600" fill="#1C5355">S-Corp Business Cash Flow</text>
+            <text x="36" y="324" font-family="JetBrains Mono, monospace" font-size="10" fill="rgba(28,83,85,0.6)" letter-spacing="0.5">ANDREW SCOTT ART INC · ANNUAL</text>
+            <circle cx="264" cy="316" r="5" fill="rgba(28,83,85,0.35)"/>
+          </g>
+
+          <!-- ============ FLOW CONNECTORS ============ -->
+          <!-- Both Principal accounts merge into Rollover IRA -->
+          <path d="M 286 52 C 380 52, 380 75, 478 75" fill="none" stroke="#4EB8BC" stroke-width="2" marker-end="url(#arrow)" opacity="0.9"/>
+          <path d="M 286 140 C 380 140, 380 75, 478 75" fill="none" stroke="#4EB8BC" stroke-width="2" marker-end="url(#arrow)" opacity="0.9"/>
+
+          <!-- Marcus → Joint Investment -->
+          <path d="M 286 228 C 380 228, 380 163, 478 163" fill="none" stroke="#4EB8BC" stroke-width="2" marker-end="url(#arrow)" opacity="0.9"/>
+
+          <!-- S-Corp → Business Investment -->
+          <path d="M 286 316 C 380 316, 380 251, 478 251" fill="none" stroke="#4EB8BC" stroke-width="2" marker-end="url(#arrow)" opacity="0.9"/>
+
+          <!-- "Consolidate" badge between the two arrows going to R1 -->
+          <g transform="translate(380, 96)">
+            <rect x="-32" y="-9" width="64" height="18" rx="9" fill="#4EB8BC"/>
+            <text x="0" y="3" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="600" fill="#0D2D2E" text-anchor="middle" letter-spacing="0.5">CONSOLIDATE</text>
+          </g>
+          <g transform="translate(380, 195)">
+            <rect x="-26" y="-9" width="52" height="18" rx="9" fill="#4EB8BC"/>
+            <text x="0" y="3" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="600" fill="#0D2D2E" text-anchor="middle" letter-spacing="0.5">TRANSFER</text>
+          </g>
+          <g transform="translate(380, 283)">
+            <rect x="-20" y="-9" width="40" height="18" rx="9" fill="#4EB8BC"/>
+            <text x="0" y="3" font-family="JetBrains Mono, monospace" font-size="8.5" font-weight="600" fill="#0D2D2E" text-anchor="middle" letter-spacing="0.5">OPEN</text>
+          </g>
+
+          <!-- ============ RIGHT COLUMN — Proposed State ============ -->
+
+          <!-- R1: Rollover IRA at Icono -->
+          <g class="acct-box proposed">
+            <rect x="478" y="44" width="262" height="64" rx="8" fill="url(#propBoxGrad)" stroke="#4EB8BC" stroke-width="2"/>
+            <text x="494" y="68" font-family="Outfit, sans-serif" font-size="13" font-weight="600" fill="#143E40">Rollover IRA</text>
+            <text x="494" y="84" font-family="JetBrains Mono, monospace" font-size="10" fill="#4EB8BC" letter-spacing="0.5" font-weight="600">ICONO · $79,556</text>
+            <circle cx="724" cy="76" r="5" fill="#4EB8BC"/>
+          </g>
+
+          <!-- R2: Joint Investment Account -->
+          <g class="acct-box proposed">
+            <rect x="478" y="132" width="262" height="64" rx="8" fill="url(#propBoxGrad)" stroke="#4EB8BC" stroke-width="2"/>
+            <text x="494" y="156" font-family="Outfit, sans-serif" font-size="13" font-weight="600" fill="#143E40">Joint Investment Account</text>
+            <text x="494" y="172" font-family="JetBrains Mono, monospace" font-size="10" fill="#4EB8BC" letter-spacing="0.5" font-weight="600">ICONO · $475,000 NEW</text>
+            <circle cx="724" cy="164" r="5" fill="#4EB8BC"/>
+          </g>
+
+          <!-- R3: S-Corp Business Investment Account -->
+          <g class="acct-box proposed">
+            <rect x="478" y="220" width="262" height="64" rx="8" fill="url(#propBoxGrad)" stroke="#4EB8BC" stroke-width="2"/>
+            <text x="494" y="244" font-family="Outfit, sans-serif" font-size="13" font-weight="600" fill="#143E40">S-Corp Business Investment</text>
+            <text x="494" y="260" font-family="JetBrains Mono, monospace" font-size="10" fill="#4EB8BC" letter-spacing="0.5" font-weight="600">ICONO · $100,000 NEW</text>
+            <circle cx="724" cy="252" r="5" fill="#4EB8BC"/>
+          </g>
+        </svg>
+
+        <div class="accounts-totals">
+          <div class="total current">
+            <span class="total-label">Today · 3 institutions</span>
+            <span class="total-value">$554,556</span>
+          </div>
+          <div class="total proposed">
+            <span class="total-label">With Icono · 1 custodian, 3 accounts</span>
+            <span class="total-value">$654,556</span>
+          </div>
+        </div>
+
+        <p class="accounts-caption">One custodian. One statement. One coordinated allocation.</p>
       </div>
     </section>
 
@@ -1281,29 +1778,24 @@ body.show-mobile-sticky .mobile-sticky { transform: translateY(0); }
           <p class="team-desc">The person who knows your plan inside and out. Leads every planning conversation and is your main point of contact when something comes up.</p>
         </div>
         <div class="team-card">
-          <div class="team-name">Chris Haigh, CFP®, RICP</div>
-          <div class="team-role">CEO · Financial Advisor</div>
-          <p class="team-desc">Sets the firm's direction and stays close to client relationships. Around for the bigger-picture conversations.</p>
+          <div class="team-name">Christopher Haigh, CFP®, RICP</div>
+          <div class="team-role">CEO · Business Planning Partner</div>
+          <p class="team-desc">Your direct counterpart on everything business-related — S-Corp strategy, salary &amp; profit-sharing design, modeling Janelle into the business, and the annual month-11 review where we decide whether to scope a separate business engagement.</p>
         </div>
         <div class="team-card">
-          <div class="team-name">Jack Hills</div>
-          <div class="team-role">Portfolio Manager</div>
+          <div class="team-name">Jack Hills, CPM</div>
+          <div class="team-role">Co-Founder · Portfolio Manager</div>
           <p class="team-desc">Runs the investment side day-to-day. The rebalancing, the tax-loss harvesting, the moves inside the portfolio.</p>
         </div>
         <div class="team-card">
-          <div class="team-name">Matt Scott</div>
-          <div class="team-role">Planning Support · Behind the Scenes</div>
+          <div class="team-name">Matthew Scott, CFP® (2027 Candidate)</div>
+          <div class="team-role">Chief Operating Officer · Planning Support</div>
           <p class="team-desc">Supports the planning work and helps keep everything moving behind the scenes.</p>
         </div>
         <div class="team-card">
           <div class="team-name">Stephanie Nemechek</div>
-          <div class="team-role">Scheduling · Paperwork · Follow-Through</div>
+          <div class="team-role">Co-Founder · Director of Hospitality</div>
           <p class="team-desc">The person who makes sure nothing stalls. Scheduling, paperwork, follow-through. It's handled before you have to ask.</p>
-        </div>
-        <div class="team-card">
-          <div class="team-name">Your CPA</div>
-          <div class="team-role">Coordinated, Not Replaced</div>
-          <p class="team-desc">We work alongside Emerald Tax (and any S-Corp preparer you keep). We don't file your returns — we make sure every planning move shows up on them correctly.</p>
         </div>
       </div>
     </section>
@@ -1342,20 +1834,19 @@ body.show-mobile-sticky .mobile-sticky { transform: translateY(0); }
             <tr><td>Portfolio implementation & management</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
             <tr><td>Quarterly rebalancing & drift monitoring</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
             <tr><td>Tax-loss harvesting</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
-            <tr><td>Multi-year Roth conversion implementation</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
             <tr><td>Distribution strategy planning</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
             <tr><td>Annual tax projections & coordination</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
             <tr><td>Tax-prep credit</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended">$450/yr</td></tr>
 
             <tr class="section-header"><td colspan="3">Investment</td></tr>
-            <tr><td>Year 1 fee</td><td class="center">$7,500 (one-time)</td><td class="center col-recommended">$9,000</td></tr>
+            <tr><td>Year 1 fee</td><td class="center">$12,000 (one-time)</td><td class="center col-recommended">$9,000</td></tr>
             <tr><td>Year 2+ planning fee</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended">Waived at $1M AUM*</td></tr>
             <tr><td>AUM fee</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended">0.90% under $2M</td></tr>
           </tbody>
         </table>
       </div>
       <p style="margin-top: 14px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; color: var(--color-text-muted); line-height: 1.6;">
-        * Year 2+ planning fee is waived once AUM crosses $1M. Restored only if the engagement scope materially expands (e.g., a separate business engagement layered on top of household planning).
+        * Year 2+ planning fee is waived once AUM crosses $1M. At the month-11 review we'll decide together whether to scope a separate business engagement for the next year — and any business-scoped fee is billed to Andrew Scott Art Inc and deductible.
       </p>
     </section>
 
@@ -1366,22 +1857,21 @@ body.show-mobile-sticky .mobile-sticky { transform: translateY(0); }
       <p class="section-lede">Two steps. Both move fast.</p>
 
       <div class="steps two-up">
-        <div class="step">
+        <div class="step has-cta">
           <div class="step-num">1</div>
           <h4>Sign the financial planning agreement.</h4>
           <p>We send the engagement letter and onboarding invoice. Once signed and the invoice is paid, we initiate the 2025 amendment workstream within the first 14 days.</p>
+          <a href="https://invoice.stripe.com/i/acct_1PEwj3K5hxtton4H/live_YWNjdF8xUEV3ajNLNWh4dHRvbjRILF9VWU4wZkdJMFBXSEN3VUNWSW5ObHJVTWVVTTdNYkU1LDE2OTg0OTY0OQ020004XvYvE1?s=db" target="_blank" rel="noopener" class="invoice-cta">
+            <span class="invoice-cta-label">Pay Onboarding Invoice</span>
+            <span class="invoice-cta-arrow">→</span>
+          </a>
+          <span class="invoice-cta-note">Secure payment via Stripe</span>
         </div>
         <div class="step">
           <div class="step-num">2</div>
           <h4>Schedule your welcome call.</h4>
           <p>You'll meet the full team, set communication preferences, and we'll walk you through the onboarding checklist together — accounts, documents, and the first 90 days of work.</p>
         </div>
-      </div>
-
-      <div class="closing">
-        <div class="closing-eyebrow">From Chris</div>
-        <p>Andrew, what struck me on our first call was how clearly you already know the answer — you don't want to go back to advertising, and the work to keep it that way is mostly already done. You and Janelle had a remarkable 2025: marriage, the salary fix, $44K into retirement accounts, $171K of business value built. Right Capital now projects a <strong style="color:var(--color-accent-aqua)">$73.7M tax-adjusted advantage</strong> over the planning horizon when we coordinate the plan instead of leaving it on autopilot. The job ahead isn't fixing what's broken. It's catching the $29K the IRS owes you back, layering the 2026 stack, and deploying what's already been earned. We'd love to be the team that does it.</p>
-        <div class="signature">— Chris Haigh, CEO · Iconoclastic Capital Management</div>
       </div>
 
       <div class="proposal-footer">
@@ -1412,19 +1902,19 @@ body.show-mobile-sticky .mobile-sticky { transform: translateY(0); }
   const PRICING = {
     project: {
       kind: 'One-time engagement',
-      amount: '$7,500',
+      amount: '$12,000',
       unit: 'one-time',
-      basis: '<strong>$7,500</strong> flat fee for a 12-month engagement covering the financial plan, the 2025 amendment coordination, and recommendations on the 2026 tax stack. You implement what we design. No AUM fee.',
+      basis: '<strong>$12,000</strong> flat fee for a 12-month engagement covering the financial plan, the 2025 amendment coordination, and recommendations on the 2026 tax stack. You implement what we design. No AUM fee.',
       features: [
         'Full financial plan & Right Capital build',
         '2025 amendment coordination',
-        'S-Corp salary & profit-sharing analysis',
-        'Roth-to-Traditional 403(b) recommendation',
-        'Cash deployment framework (you execute)',
+        'S-Corp salary & profit-sharing analysis ($190K target)',
+        'Spending plan + Janelle-to-business modeling',
+        '$500K cash surplus transfer roadmap (you execute)',
         'Up to 3 review meetings over 12 months'
       ],
       stickyLabel: 'Project Engagement',
-      stickyAmount: '$7,500 one-time'
+      stickyAmount: '$12,000 one-time'
     },
     premier: {
       kind: 'Ongoing advisory',
@@ -1435,7 +1925,7 @@ body.show-mobile-sticky .mobile-sticky { transform: translateY(0); }
         'Active multi-year tax planning, including the 2025 amendment workflow',
         'Portfolio implementation across all four retirement accounts',
         'S-Corp coordination — salary sizing, profit-sharing, basis tracking',
-        'Roth strategy: backdoor for both, mega-backdoor capacity review',
+        'Business as a leverage tool — deductible structures, family employment, sale readiness',
         'Quarterly rebalancing, drift monitoring, and tax-loss harvesting',
         'Plan Premier tax-prep credit ($450/yr)'
       ],
@@ -1519,6 +2009,119 @@ body.show-mobile-sticky .mobile-sticky { transform: translateY(0); }
     });
   }, { threshold: 0.3 });
   bars.forEach(b => barObs.observe(b));
+
+  /* -------- Scope card flip behavior -------- */
+  const scopeCards = document.querySelectorAll('.scope-item');
+  scopeCards.forEach(card => {
+    const toggle = () => card.classList.toggle('flipped');
+    card.addEventListener('click', toggle);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggle();
+      }
+    });
+  });
+
+  /* -------- Celebration animation on Get Started CTA -------- */
+  const panelCta = document.getElementById('panelCta');
+  const celebrationNote = document.getElementById('celebrationNote');
+  const confettiOrigin = document.getElementById('confettiOrigin');
+
+  const confettiPalette = [
+    '#4EB8BC', // accent aqua
+    '#BDE5E7', // aqua soft
+    '#F7EEDB', // cream
+    '#FFFEFB', // white
+    '#1C5355', // primary teal
+    '#FFD166', // sunny yellow accent
+    '#EF476F', // pink accent
+  ];
+  const celebrationMessages = [
+    "Let's gooo! 🎉",
+    "Best decision all year ✨",
+    "Andrew, you brilliant artist 🎨",
+    "Janelle, welcome aboard 🚀",
+    "Time to deploy that $475K 💸",
+    "$73.7M, here we come 📈",
+    "Refund inbound 💰",
+    "We're so in 🙌",
+  ];
+
+  function spawnConfetti() {
+    const count = 38;
+    const shapes = ['', 'round', 'streamer'];
+    const pieces = [];
+
+    for (let i = 0; i < count; i++) {
+      const piece = document.createElement('div');
+      const shape = shapes[Math.floor(Math.random() * shapes.length)];
+      piece.className = 'confetti-piece' + (shape ? ' ' + shape : '');
+      piece.style.background = confettiPalette[Math.floor(Math.random() * confettiPalette.length)];
+
+      // Random trajectory — spread upward and outward, then gravity pulls down
+      const angle = (Math.random() * Math.PI) - (Math.PI / 2); // -90° to +90° (upward fan)
+      const speed = 80 + Math.random() * 160;
+      const dx = Math.cos(angle) * speed * (Math.random() < 0.5 ? -1 : 1);
+      const dyUp = -Math.abs(Math.sin(angle) * speed) - 60; // always negative (up)
+      const dyDown = dyUp + 220 + Math.random() * 180; // gravity pulls down
+      const rot = (Math.random() * 720 - 360);
+      const dur = 1200 + Math.random() * 800;
+
+      piece.style.setProperty('--dx', dx + 'px');
+      piece.style.setProperty('--dy', dyDown + 'px');
+      piece.style.setProperty('--rot', rot + 'deg');
+      piece.style.setProperty('--dur', dur + 'ms');
+
+      confettiOrigin.appendChild(piece);
+      pieces.push({ el: piece, dur });
+
+      // Trigger animation on next frame
+      requestAnimationFrame(() => {
+        piece.classList.add('animate');
+      });
+    }
+
+    // Clean up after the longest animation completes
+    const maxDur = Math.max(...pieces.map(p => p.dur)) + 200;
+    setTimeout(() => {
+      pieces.forEach(p => p.el.remove());
+    }, maxDur);
+  }
+
+  function showCelebrationNote() {
+    const msg = celebrationMessages[Math.floor(Math.random() * celebrationMessages.length)];
+    celebrationNote.textContent = msg;
+    celebrationNote.classList.remove('show');
+    // Force reflow so animation re-triggers
+    void celebrationNote.offsetWidth;
+    celebrationNote.classList.add('show');
+    setTimeout(() => {
+      celebrationNote.classList.remove('show');
+    }, 1700);
+  }
+
+  if (panelCta) {
+    panelCta.addEventListener('click', (e) => {
+      e.preventDefault();
+      const href = panelCta.getAttribute('href');
+
+      panelCta.classList.remove('celebrating');
+      void panelCta.offsetWidth;
+      panelCta.classList.add('celebrating');
+      spawnConfetti();
+      showCelebrationNote();
+
+      setTimeout(() => {
+        panelCta.classList.remove('celebrating');
+      }, 650);
+
+      // Navigate after the burst lands - feels deserved
+      setTimeout(() => {
+        window.location.href = href;
+      }, 750);
+    });
+  }
 
   /* -------- Mobile sticky CTA -------- */
   const panelEl = document.querySelector('.panel');
