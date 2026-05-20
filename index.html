@@ -1,0 +1,1543 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Andrew Scott & Janelle Panico: Iconoclastic Proposal</title>
+<meta name="description" content="A personal financial plan from Iconoclastic Capital Management, prepared for Andrew Scott & Janelle Panico." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hedvig+Letters+Serif:opsz@12..24&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   TOKENS
+   ========================================================= */
+:root {
+  --color-primary-teal:  #1C5355;
+  --color-primary-teal-dark: #143E40;
+  --color-primary-teal-deep: #0D2D2E;
+  --color-accent-aqua:   #4EB8BC;
+  --color-accent-aqua-soft: #BDE5E7;
+  --color-accent-aqua-glow: rgba(78,184,188,0.35);
+  --color-surface-cream: #F7EEDB;
+  --color-surface-sand:  #F4F2EA;
+  --color-surface-white: #FFFEFB;
+  --color-neutral-stone: #DAD8D2;
+  --color-neutral-soft:  #EAE8E2;
+  --color-text-body:     #1C5355;
+  --color-text-muted:    rgba(28, 83, 85, 0.72);
+  --color-text-quiet:    rgba(28, 83, 85, 0.48);
+  --color-on-teal:       #FFFEFB;
+  --color-on-teal-muted: rgba(255,254,251,0.82);
+
+  --color-warning:       #A43D33;
+  --color-success:       #2E6B4F;
+
+  --font-serif: "Hedvig Letters Serif", "Hoefler Text", Georgia, serif;
+  --font-sans:  "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:  "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-pill: 999px;
+
+  --shadow-card: 0 1px 2px rgba(28,83,85,0.06), 0 8px 24px rgba(28,83,85,0.08);
+  --shadow-panel: 0 2px 4px rgba(28,83,85,0.06), 0 24px 50px rgba(28,83,85,0.1);
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 72px;
+
+  --panel-w: 420px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  color: var(--color-text-body);
+  background: var(--color-surface-white);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 700; margin: 0; letter-spacing: -0.015em; }
+h1 { font-size: clamp(36px, 4.2vw, 52px); line-height: 1.05; }
+h2 { font-size: clamp(26px, 3vw, 38px); line-height: 1.1; }
+h3 { font-size: 18px; line-height: 1.3; }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-accent-aqua);
+  margin-bottom: 12px;
+  display: inline-block;
+}
+.section-title {
+  color: var(--color-primary-teal-deep);
+  margin-bottom: 12px;
+}
+.section-lede {
+  font-size: 16px;
+  color: var(--color-text-muted);
+  max-width: 580px;
+  line-height: 1.6;
+  margin: 0 0 32px 0;
+}
+
+.wordmark {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.01em;
+  color: var(--color-primary-teal-dark);
+}
+.wordmark.on-dark { color: var(--color-on-teal); }
+
+/* Top strip */
+.topstrip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 40px;
+  border-bottom: 1px solid var(--color-neutral-soft);
+  background: var(--color-surface-white);
+  position: sticky; top: 0; z-index: 10;
+}
+.topstrip .meta {
+  display: flex; gap: 14px; align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+.pulse {
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.pulse::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--color-accent-aqua);
+  box-shadow: 0 0 0 0 var(--color-accent-aqua-glow);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 0 0 var(--color-accent-aqua-glow); }
+  50% { box-shadow: 0 0 0 6px transparent; }
+}
+
+/* =========================================================
+   APP LAYOUT
+   ========================================================= */
+.app {
+  display: grid;
+  grid-template-columns: var(--panel-w) 1fr;
+  min-height: 100vh;
+}
+
+/* ============ DECISION PANEL ============ */
+.panel {
+  background: var(--color-primary-teal-dark);
+  color: var(--color-on-teal);
+  position: sticky;
+  top: 53px;
+  height: calc(100vh - 53px);
+  overflow-y: auto;
+}
+.panel-inner {
+  padding: 36px 32px 40px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.prepared {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  color: var(--color-on-teal-muted);
+  text-transform: uppercase;
+  text-align: right;
+  line-height: 1.5;
+}
+.panel-intro .for-label {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.18em;
+  color: var(--color-accent-aqua);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  display: inline-block;
+}
+.panel-intro h2 {
+  color: var(--color-on-teal);
+  font-size: 30px;
+  line-height: 1.15;
+  margin-bottom: 14px;
+}
+.panel-intro h2 .accent {
+  color: var(--color-accent-aqua);
+  font-style: italic;
+}
+.panel-intro p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--color-on-teal-muted);
+  margin: 0;
+}
+
+/* Toggle */
+.toggle-group {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: rgba(0,0,0,0.22);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  margin-top: 4px;
+}
+.toggle-group .slider {
+  position: absolute;
+  top: 4px; bottom: 4px;
+  width: calc(50% - 4px);
+  background: var(--color-accent-aqua);
+  border-radius: var(--radius-pill);
+  transition: transform 0.32s var(--ease-out);
+  pointer-events: none;
+}
+.toggle-group[data-active="project"] .slider { transform: translateX(0); }
+.toggle-group[data-active="premier"] .slider { transform: translateX(100%); }
+.toggle-group button {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  border: none;
+  color: var(--color-on-teal-muted);
+  padding: 10px 4px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+  transition: color 0.2s;
+  letter-spacing: 0.02em;
+}
+.toggle-group button.active { color: var(--color-primary-teal-deep); }
+.toggle-group button .star {
+  font-size: 11px;
+  margin-right: 4px;
+}
+
+/* Price block */
+.price-block {
+  padding: 22px 0 4px 0;
+  border-top: 1px solid rgba(255,254,251,0.1);
+  border-bottom: 1px solid rgba(255,254,251,0.1);
+  padding-bottom: 22px;
+}
+.price-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--color-on-teal-muted);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.recommended-pill {
+  background: var(--color-accent-aqua);
+  color: var(--color-primary-teal-deep);
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 9.5px;
+  letter-spacing: 0.1em;
+}
+.price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.price-amount {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 44px;
+  color: var(--color-on-teal);
+  letter-spacing: -0.025em;
+  line-height: 1;
+}
+.price-unit {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--color-on-teal-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.price-basis {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--color-on-teal-muted);
+  margin: 0;
+}
+.price-basis strong { color: var(--color-on-teal); font-weight: 600; }
+
+/* Panel features list */
+.panel-features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.panel-features li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--color-on-teal-muted);
+}
+.panel-features li::before {
+  content: "→";
+  color: var(--color-accent-aqua);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.panel-cta {
+  margin-top: 8px;
+  background: var(--color-accent-aqua);
+  color: var(--color-primary-teal-deep);
+  padding: 14px 20px;
+  border-radius: var(--radius-pill);
+  text-align: center;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: block;
+  letter-spacing: 0.01em;
+}
+.panel-cta:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(78,184,188,0.4);
+}
+
+/* ============ EVIDENCE COLUMN ============ */
+.evidence {
+  padding: 56px 64px 80px 64px;
+  max-width: 880px;
+}
+
+/* Intro */
+.intro {
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--color-neutral-soft);
+  margin-bottom: 48px;
+}
+.intro h1 {
+  color: var(--color-primary-teal-deep);
+  margin-bottom: 20px;
+}
+.intro h1 .accent {
+  color: var(--color-accent-aqua);
+  font-style: italic;
+}
+.intro .lede {
+  font-size: 18px;
+  line-height: 1.6;
+  color: var(--color-text-body);
+  max-width: 640px;
+  margin: 0;
+}
+.intro .lede strong { color: var(--color-primary-teal-deep); font-weight: 600; }
+
+/* Snapshot row */
+.snapshot-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+.snapshot-card {
+  padding: 18px 18px 16px 18px;
+  background: var(--color-surface-sand);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-neutral-soft);
+}
+.snapshot-card .label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.snapshot-card .value {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 22px;
+  color: var(--color-primary-teal-dark);
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+}
+
+/* Quote block */
+.quote-block {
+  background: var(--color-surface-cream);
+  border-radius: var(--radius-md);
+  padding: 28px 32px;
+  margin: 40px 0;
+  position: relative;
+}
+.quote-block::before {
+  content: "\201C";
+  position: absolute;
+  top: 8px; left: 18px;
+  font-family: var(--font-serif);
+  font-size: 60px;
+  color: var(--color-accent-aqua);
+  line-height: 1;
+}
+.quote-block .quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--color-primary-teal-dark);
+  padding-left: 32px;
+  margin-bottom: 10px;
+}
+.quote-block .attrib {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  padding-left: 32px;
+}
+
+/* =========================================================
+   SECTION SPECIFIC STYLES
+   ========================================================= */
+
+/* Delta section - the big numbers */
+#delta { margin-bottom: 64px; }
+.delta-callouts {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 32px 0 36px 0;
+}
+.delta-callout {
+  background: linear-gradient(180deg, var(--color-primary-teal) 0%, var(--color-primary-teal-dark) 100%);
+  color: var(--color-on-teal);
+  border-radius: var(--radius-md);
+  padding: 24px 22px;
+  position: relative;
+  overflow: hidden;
+}
+.delta-callout::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 120px; height: 120px;
+  background: radial-gradient(circle, var(--color-accent-aqua-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+.delta-callout .delta-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-accent-aqua);
+  margin-bottom: 8px;
+  position: relative;
+  z-index: 1;
+}
+.delta-callout .delta-value {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 38px;
+  letter-spacing: -0.025em;
+  margin-bottom: 4px;
+  line-height: 1;
+  position: relative;
+  z-index: 1;
+}
+.delta-callout .delta-desc {
+  font-size: 12.5px;
+  color: var(--color-on-teal-muted);
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+}
+
+.delta-bars {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  margin-top: 24px;
+}
+.bar-card {
+  padding: 20px 22px 22px 22px;
+  background: var(--color-surface-white);
+  border: 1px solid var(--color-neutral-soft);
+  border-radius: var(--radius-md);
+}
+.bar-card.featured {
+  border-color: var(--color-accent-aqua);
+  background: linear-gradient(180deg, rgba(78,184,188,0.04) 0%, var(--color-surface-white) 60%);
+}
+.bar-card .bar-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 10px;
+}
+.bar-card .bar-name {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+.bar-card .bar-amount {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 28px;
+  color: var(--color-primary-teal-dark);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.bar-track {
+  height: 10px;
+  background: var(--color-neutral-soft);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+  margin: 10px 0 14px 0;
+}
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary-teal) 0%, var(--color-accent-aqua) 100%);
+  border-radius: var(--radius-pill);
+  width: 0;
+  transition: width 1.5s var(--ease-out);
+}
+.bar-card.featured .bar-fill {
+  background: linear-gradient(90deg, var(--color-accent-aqua) 0%, var(--color-accent-aqua-soft) 100%);
+}
+.bar-detail {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Rationale block - paragraph beneath delta */
+.rationale {
+  background: var(--color-surface-sand);
+  border-left: 3px solid var(--color-accent-aqua);
+  padding: 22px 26px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  margin-top: 28px;
+}
+.rationale h4 {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 8px;
+}
+.rationale p {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--color-text-body);
+  margin: 0;
+}
+.rationale p strong {
+  color: var(--color-primary-teal-dark);
+  font-weight: 600;
+}
+
+/* Plans grid (Plan A/B/C) */
+#scenarios { margin-bottom: 64px; }
+.plans-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+.plan-card {
+  background: var(--color-surface-white);
+  border: 1px solid var(--color-neutral-soft);
+  border-radius: var(--radius-md);
+  padding: 22px 22px 24px 22px;
+}
+.plan-card.featured {
+  border-color: var(--color-accent-aqua);
+  background: linear-gradient(180deg, rgba(78,184,188,0.04) 0%, var(--color-surface-white) 60%);
+  position: relative;
+}
+.plan-card.featured::before {
+  content: "Highest leverage";
+  position: absolute;
+  top: -10px; left: 18px;
+  background: var(--color-accent-aqua);
+  color: var(--color-primary-teal-deep);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.plan-card .plan-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--color-accent-aqua);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+.plan-card h3 {
+  color: var(--color-primary-teal-dark);
+  font-size: 19px;
+  margin-bottom: 10px;
+  line-height: 1.25;
+}
+.plan-card .plan-desc {
+  font-size: 13.5px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+.plan-card .plan-metric {
+  padding-top: 14px;
+  border-top: 1px solid var(--color-neutral-soft);
+}
+.plan-card .plan-metric .metric-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.plan-card .plan-metric .metric-value {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 26px;
+  color: var(--color-primary-teal-dark);
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+/* Scope section */
+#scope { margin-bottom: 64px; }
+.scope-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 28px;
+}
+.scope-item {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px 18px;
+  background: var(--color-surface-white);
+  border: 1px solid var(--color-neutral-soft);
+  border-radius: var(--radius-md);
+}
+.scope-item .scope-icon {
+  width: 32px; height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--color-accent-aqua-soft);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 16px;
+}
+.scope-item .scope-text {
+  flex: 1;
+}
+.scope-item .scope-title {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--color-primary-teal-dark);
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+.scope-item .scope-desc {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  margin: 0;
+}
+.scope-item .scope-value {
+  display: inline-block;
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  color: var(--color-success);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Team section */
+#team { margin-bottom: 64px; }
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-top: 28px;
+}
+.team-card {
+  background: var(--color-surface-white);
+  border: 1px solid var(--color-neutral-soft);
+  border-radius: var(--radius-md);
+  padding: 18px 18px 20px 18px;
+}
+.team-card.lead {
+  border-color: var(--color-accent-aqua);
+  background: linear-gradient(180deg, rgba(78,184,188,0.04) 0%, var(--color-surface-white) 60%);
+}
+.team-card .team-name {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--color-primary-teal-dark);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.team-card .team-role {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  color: var(--color-accent-aqua);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+.team-card .team-desc {
+  font-size: 12.5px;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Comparison table */
+#compare { margin-bottom: 64px; }
+.compare-table {
+  margin-top: 28px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-neutral-soft);
+}
+.compare-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-surface-white);
+}
+.compare-table th, .compare-table td {
+  padding: 14px 18px;
+  text-align: left;
+  font-size: 13.5px;
+  border-bottom: 1px solid var(--color-neutral-soft);
+}
+.compare-table th {
+  background: var(--color-surface-sand);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+.compare-table th.recommended {
+  color: var(--color-primary-teal-deep);
+  position: relative;
+}
+.compare-table th.recommended::after {
+  content: "★ Recommended";
+  display: block;
+  font-size: 8.5px;
+  margin-top: 4px;
+  color: var(--color-accent-aqua);
+  letter-spacing: 0.1em;
+}
+.compare-table td:first-child {
+  font-weight: 500;
+  color: var(--color-text-body);
+}
+.compare-table td.col-recommended {
+  background: rgba(78,184,188,0.05);
+  color: var(--color-primary-teal-deep);
+  font-weight: 600;
+}
+.compare-table td.center { text-align: center; }
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr.section-header td {
+  background: var(--color-surface-sand);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  padding: 10px 18px;
+  font-weight: 500;
+}
+.check {
+  display: inline-block;
+  width: 18px; height: 18px;
+  background: var(--color-accent-aqua);
+  border-radius: 50%;
+  color: var(--color-primary-teal-deep);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 18px;
+}
+.dash { color: var(--color-text-quiet); font-weight: 700; }
+
+/* Next-steps section */
+#next { margin-bottom: 80px; }
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 28px;
+}
+.steps.two-up {
+  grid-template-columns: repeat(2, 1fr);
+  max-width: 720px;
+}
+.step {
+  background: var(--color-surface-white);
+  border: 1px solid var(--color-neutral-soft);
+  border-radius: var(--radius-md);
+  padding: 22px 22px 24px 22px;
+  position: relative;
+}
+.step .step-num {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 36px;
+  color: var(--color-accent-aqua);
+  line-height: 1;
+  margin-bottom: 14px;
+}
+.step h4 {
+  font-size: 16px;
+  color: var(--color-primary-teal-dark);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.step p {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Closing block */
+.closing {
+  margin-top: 56px;
+  padding: 32px 36px;
+  background: linear-gradient(135deg, var(--color-primary-teal-dark) 0%, var(--color-primary-teal-deep) 100%);
+  border-radius: var(--radius-md);
+  color: var(--color-on-teal);
+  position: relative;
+  overflow: hidden;
+}
+.closing::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 240px; height: 240px;
+  background: radial-gradient(circle, var(--color-accent-aqua-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+.closing .closing-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--color-accent-aqua);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  position: relative; z-index: 1;
+}
+.closing p {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 17px;
+  line-height: 1.65;
+  margin: 0 0 16px 0;
+  position: relative; z-index: 1;
+}
+.closing .signature {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--color-on-teal-muted);
+  text-transform: uppercase;
+  position: relative; z-index: 1;
+}
+
+/* Footer */
+.proposal-footer {
+  border-top: 1px solid var(--color-neutral-soft);
+  padding: 32px 0 8px 0;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--color-text-quiet);
+  line-height: 1.6;
+}
+.proposal-footer a { color: var(--color-accent-aqua); text-decoration: none; }
+.proposal-footer a:hover { text-decoration: underline; }
+
+/* Mobile sticky bar */
+.mobile-sticky {
+  display: none;
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--color-primary-teal);
+  color: var(--color-on-teal);
+  padding: 14px 20px;
+  z-index: 100;
+  border-top: 1px solid rgba(255,254,251,0.1);
+  align-items: center;
+  justify-content: space-between;
+  transform: translateY(100%);
+  transition: transform 0.4s var(--ease-out);
+}
+.mobile-sticky .label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--color-on-teal-muted);
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+.mobile-sticky .amount {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 20px;
+}
+.mobile-sticky .sticky-cta {
+  background: var(--color-accent-aqua);
+  color: var(--color-primary-teal-deep);
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+}
+body.show-mobile-sticky .mobile-sticky { transform: translateY(0); }
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+@media (max-width: 960px) {
+  .app { grid-template-columns: 1fr; }
+  .panel { position: relative; top: 0; height: auto; width: 100%; }
+  .evidence { padding: 40px 24px 100px 24px; }
+  .snapshot-row { grid-template-columns: repeat(2, 1fr); }
+  .scope-list { grid-template-columns: 1fr; }
+  .delta-bars { grid-template-columns: 1fr; }
+  .delta-callouts { grid-template-columns: 1fr; }
+  .plans-grid { grid-template-columns: 1fr; }
+  .steps { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr; }
+  .mobile-sticky { display: flex; }
+  .topstrip { padding: 12px 20px; }
+  .compare-table { font-size: 12px; overflow-x: auto; }
+}
+
+@media print {
+  .panel { position: relative; height: auto; }
+  .mobile-sticky { display: none !important; }
+  .topstrip { position: relative; }
+}
+</style>
+</head>
+<body data-selected="premier">
+
+<!-- Compact top strip -->
+<div class="topstrip">
+  <span class="wordmark">iconoclastic</span>
+  <div class="meta">
+    <span class="pulse">Live Proposal</span>
+    <span>·</span>
+    <span>Prepared 05 / 20 / 2026</span>
+  </div>
+</div>
+
+<!-- Mobile sticky price bar -->
+<div class="mobile-sticky" id="mobileSticky">
+  <div>
+    <div class="label" id="mobileStickyLabel">Guided Wealth Premier</div>
+    <div class="amount" id="mobileStickyAmount">$9,000 + 0.90% AUM</div>
+  </div>
+  <a href="mailto:chris@iconocapital.com?subject=Scott%20%26%20Panico%20Proposal:%20Ready%20to%20Move%20Forward" class="sticky-cta">Get Started →</a>
+</div>
+
+<div class="app">
+
+  <!-- ============ DECISION PANEL ============ -->
+  <aside class="panel">
+    <div class="panel-inner">
+      <div class="panel-header">
+        <span class="wordmark on-dark">iconoclastic</span>
+        <div class="prepared">Andrew & Janelle<br>Scott · Panico</div>
+      </div>
+
+      <div class="panel-intro">
+        <span class="for-label">A proposal prepared for</span>
+        <h2>You've earned the right to <span class="accent">not go back</span>. Let's protect it.</h2>
+        <p>Pick the engagement below. Every piece of evidence on the right is in service of the choice you're holding.</p>
+      </div>
+
+      <!-- Toggle -->
+      <div class="toggle-group" id="toggle" data-active="premier" role="tablist" aria-label="Choose engagement">
+        <div class="slider" aria-hidden="true"></div>
+        <button type="button" data-opt="project" role="tab" aria-selected="false">Project</button>
+        <button type="button" data-opt="premier" class="active" role="tab" aria-selected="true">
+          <span class="star">★</span> Premier
+        </button>
+      </div>
+
+      <!-- Price block -->
+      <div class="price-block">
+        <div class="price-label">
+          <span id="priceKind">Ongoing advisory</span>
+          <span class="recommended-pill">★ Recommended</span>
+        </div>
+        <div class="price-row">
+          <span class="price-amount" id="priceAmount">$9,000</span>
+          <span class="price-unit" id="priceUnit">Year 1 + 0.90% AUM</span>
+        </div>
+        <p class="price-basis" id="priceBasis">
+          <strong>$9,000</strong> Year 1 planning fee. <strong>Year 2+ planning fee waived</strong> once AUM crosses $1M (which the cash deployment puts you over almost immediately). Plus <strong>0.90%</strong> on assets we manage. The <strong>$73.7M lifetime delta</strong> Right Capital projects makes the annual fee a rounding error.
+        </p>
+      </div>
+
+      <!-- Panel features list (changes by selection) -->
+      <ul class="panel-features" id="panelFeatures">
+        <li>Active multi-year tax planning, including the 2025 amendment workflow</li>
+        <li>Portfolio implementation across all four retirement accounts</li>
+        <li>S-Corp coordination — salary sizing, profit-sharing, basis tracking</li>
+        <li>Roth strategy: backdoor for both, mega-backdoor capacity review</li>
+        <li>Quarterly rebalancing, drift monitoring, and tax-loss harvesting</li>
+        <li>Plan Premier tax-prep credit ($450/yr)</li>
+      </ul>
+
+      <a href="mailto:chris@iconocapital.com?subject=Scott%20%26%20Panico%20Proposal:%20Ready%20to%20Move%20Forward" class="panel-cta">Get Started →</a>
+    </div>
+  </aside>
+
+  <!-- ============ EVIDENCE COLUMN ============ -->
+  <main class="evidence">
+
+    <!-- ===== Intro ===== -->
+    <div class="intro">
+      <span class="eyebrow">Your Plan</span>
+      <h1>The work isn't fixing problems.<br>It's <span class="accent">protecting</span> what you've already built.</h1>
+      <p class="lede">
+        2025 was a year of <strong>massive progress</strong>: you got married, filed jointly, fixed the S-Corp salary, and put <strong>$44,184</strong> into retirement accounts. The plan already runs at <strong>100% success</strong>. Coordinated tax + investment planning lifts your tax-adjusted ending assets by <strong>$73.7M</strong> over the planning horizon — starting with an estimated <strong>$29K federal refund</strong> on the 2025 amendment.
+      </p>
+      <div class="snapshot-row">
+        <div class="snapshot-card">
+          <div class="label">Net Worth</div>
+          <div class="value">$1.62M</div>
+        </div>
+        <div class="snapshot-card">
+          <div class="label">Investable Assets</div>
+          <div class="value">$960K</div>
+        </div>
+        <div class="snapshot-card">
+          <div class="label">2025 Household Income</div>
+          <div class="value">$784K</div>
+        </div>
+        <div class="snapshot-card">
+          <div class="label">Plan Success</div>
+          <div class="value">100%</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Delta Section ===== -->
+    <section id="delta">
+      <span class="eyebrow">The Delta</span>
+      <h2 class="section-title">What changes when we coordinate the plan.</h2>
+      <p class="section-lede">Three numbers worth the conversation. One you can claim this quarter. One stacks every year. One compounds for the next sixty.</p>
+
+      <div class="delta-callouts">
+        <div class="delta-callout">
+          <div class="delta-label">2025 Amendment</div>
+          <div class="delta-value" data-count="29000" data-prefix="$" data-suffix="" data-format="dollar-k">$29.0K</div>
+          <div class="delta-desc">Estimated federal refund available now — Form 8995-A error on the original return.</div>
+        </div>
+        <div class="delta-callout">
+          <div class="delta-label">Annual Tax Stack</div>
+          <div class="delta-value" data-count="39" data-prefix="$" data-suffix="K">$39K</div>
+          <div class="delta-desc">Profit-sharing + Roth-to-Traditional + HSA, layered every year.</div>
+        </div>
+        <div class="delta-callout">
+          <div class="delta-label">Lifetime Tax-Adjusted Lift</div>
+          <div class="delta-value" data-count="73.7" data-prefix="$" data-suffix="M">$73.7M</div>
+          <div class="delta-desc">Right Capital's projected delta vs. doing nothing — $34.4M less in lifetime taxes paid.</div>
+        </div>
+      </div>
+
+      <div class="delta-bars">
+        <div class="bar-card">
+          <div class="bar-label">
+            <span class="bar-name">Current Allocation</span>
+            <span class="bar-amount">7.3%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" data-width="48"></div></div>
+          <p class="bar-detail"><strong>27% in cash, 37% U.S. equities.</strong> Risk score 61 — below your tolerance (target 79). You've held the line on cash because deploying it without a plan felt worse than the drag. That's the right instinct.</p>
+        </div>
+        <div class="bar-card featured">
+          <div class="bar-label">
+            <span class="bar-name">Proposed (Icono 85/15)</span>
+            <span class="bar-amount">9.4%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" data-width="92"></div></div>
+          <p class="bar-detail"><strong>+2.1 points of expected return</strong> by moving excess cash into U.S. equities. Risk score 79 — matches your stated tolerance. Same plan, deployed deliberately over 6–12 months.</p>
+        </div>
+      </div>
+
+      <div class="rationale">
+        <h4>Why the proposed allocation</h4>
+        <p>You're 34 and 33. You have a <strong>30+ year horizon</strong>, two earners, an S-Corp generating six figures, and a Monte Carlo result that already runs at <strong>100% success</strong>. The biggest risk in your portfolio today isn't volatility — it's the <strong>cash drag</strong> consuming roughly $31K per year of opportunity cost. Right Capital projects the proposed plan reaches <strong>$38.7M at age 100</strong> vs. <strong>$24.7M</strong> on the current path — a $14M lift on top of dramatically lower lifetime taxes. We deploy gradually so it never feels like a single big bet.</p>
+      </div>
+    </section>
+
+    <!-- ===== Scenarios / Plans A B C ===== -->
+    <section id="scenarios">
+      <span class="eyebrow">Three Plays</span>
+      <h2 class="section-title">Where the planning effort lives.</h2>
+      <p class="section-lede">You don't have a single problem — you have three independent wins, each with a different timeline and risk profile. Here's how we'd sequence them.</p>
+
+      <div class="plans-grid">
+        <div class="plan-card">
+          <div class="plan-tag">Play A · Now</div>
+          <h3>File the 2025 amendment.</h3>
+          <p class="plan-desc">Form 8995-A shows $0 QBI deduction despite $411,902 of qualified business income — the K-1 (Box 17 Code V) failed to report Andrew's $235K in W-2 wages. Correcting it pulls you back from the 37% bracket to 35% and triggers a federal refund. (After further investigation, NY won't refund — federal only.)</p>
+          <div class="plan-metric">
+            <div class="metric-label">Estimated federal refund</div>
+            <div class="metric-value">~$29,000</div>
+          </div>
+        </div>
+
+        <div class="plan-card featured">
+          <div class="plan-tag">Play B · 2026 Open Enrollment</div>
+          <h3>Re-engineer the 2026 tax stack.</h3>
+          <p class="plan-desc">Three coordinated moves. Add S-Corp <strong>employer profit-sharing</strong> (up to $58,750/yr on Andrew's $235K salary). Switch Janelle from <strong>Roth 403(b) → Traditional</strong> at her 43.85% combined marginal rate. Max <strong>family HSA</strong> ($6,550 of remaining capacity).</p>
+          <div class="plan-metric">
+            <div class="metric-label">Combined annual savings</div>
+            <div class="metric-value">~$38,940</div>
+          </div>
+        </div>
+
+        <div class="plan-card">
+          <div class="plan-tag">Play C · Ongoing</div>
+          <h3>Build a systematic deployment engine.</h3>
+          <p class="plan-desc">Deploy the existing $425K cash buffer into the 85/15 target over 6–12 months. Then redirect the <strong>$350,818/yr surplus</strong> Right Capital identifies in 2026 cash flow into a coordinated taxable account — instead of letting it pile up in Marcus again. Cash drag drops 27% → 3.7%; expected return climbs 7.3% → 9.4%.</p>
+          <div class="plan-metric">
+            <div class="metric-label">Annual saving redirected</div>
+            <div class="metric-value">~$351K/yr</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Quote block - bridge to scope ===== -->
+    <div class="quote-block">
+      <p class="quote">I want to be wise with this money so I can keep doing what I love and not have to worry about making an enormous amount of money to not have to go back. I just don't want to go back.</p>
+      <div class="attrib">Andrew · Intro Call · May 2026</div>
+    </div>
+
+    <!-- ===== Scope ===== -->
+    <section id="scope">
+      <span class="eyebrow">Scope of Work</span>
+      <h2 class="section-title">What we'll actually do.</h2>
+      <p class="section-lede">Eight workstreams, sequenced by urgency. Every line is grounded in something already in the 2025 return, the Right Capital plan, or the discovery call.</p>
+
+      <div class="scope-list">
+        <div class="scope-item">
+          <div class="scope-icon">📄</div>
+          <div class="scope-text">
+            <div class="scope-title">2025 Amendment Coordination</div>
+            <p class="scope-desc">Coordinate the corrected 1120-S, amended K-1, and 1040-X with the S-Corp preparer and Emerald Tax. We project-manage so you don't have to.</p>
+            <span class="scope-value">~$29K federal refund</span>
+          </div>
+        </div>
+
+        <div class="scope-item">
+          <div class="scope-icon">🧮</div>
+          <div class="scope-text">
+            <div class="scope-title">S-Corp Profit-Sharing 401(k)</div>
+            <p class="scope-desc">Confirm 401go's capacity for employer contributions and design the 2026 contribution sizing on Andrew's $235K W-2.</p>
+            <span class="scope-value">Up to $25K/yr savings</span>
+          </div>
+        </div>
+
+        <div class="scope-item">
+          <div class="scope-icon">🔁</div>
+          <div class="scope-text">
+            <div class="scope-title">Janelle's 403(b): Roth → Traditional</div>
+            <p class="scope-desc">At 43.85% combined marginal rate, traditional pre-tax wins decisively. Coordinate the change with U of R benefits at open enrollment.</p>
+            <span class="scope-value">~$10,305/yr savings</span>
+          </div>
+        </div>
+
+        <div class="scope-item">
+          <div class="scope-icon">💧</div>
+          <div class="scope-text">
+            <div class="scope-title">Cash Deployment Framework</div>
+            <p class="scope-desc">Tiered reserve design (operating / opportunity / deployable), 6–12 month DCA into the 85/15 target, and a systematic engine for the $350K/yr surplus going forward.</p>
+            <span class="scope-value">~$351K/yr redirected</span>
+          </div>
+        </div>
+
+        <div class="scope-item">
+          <div class="scope-icon">📊</div>
+          <div class="scope-text">
+            <div class="scope-title">Unified Portfolio Strategy</div>
+            <p class="scope-desc">Treat Andrew's 401(k), Traditional IRA, Old 401(k), and Janelle's 403(b) as one portfolio. Asset-locate for tax efficiency. Quarterly rebalancing.</p>
+          </div>
+        </div>
+
+        <div class="scope-item">
+          <div class="scope-icon">🏦</div>
+          <div class="scope-text">
+            <div class="scope-title">Backdoor & Mega-Backdoor Roth</div>
+            <p class="scope-desc">Both of you are well past the direct-contribution phaseout. Build the tax-free bucket annually. Clean up the 2024 Traditional IRA basis.</p>
+          </div>
+        </div>
+
+        <div class="scope-item">
+          <div class="scope-icon">🛡️</div>
+          <div class="scope-text">
+            <div class="scope-title">Insurance Review & Gap Analysis</div>
+            <p class="scope-desc">Andrew shows $0 life benefit on his primary policy; Janelle has group-only life. Address the gaps before the first child arrives.</p>
+          </div>
+        </div>
+
+        <div class="scope-item">
+          <div class="scope-icon">🎯</div>
+          <div class="scope-text">
+            <div class="scope-title">Variable Income Cash Flow System</div>
+            <p class="scope-desc">Automated tax reserves and a single-income stress test for the "algorithm slows down" scenario you flagged.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Meet the Team ===== -->
+    <section id="team">
+      <span class="eyebrow">The People</span>
+      <h2 class="section-title">Who's actually doing the work.</h2>
+      <p class="section-lede">Iconoclastic is a five-person team. Each engagement is collaborative — you'll have a single point of contact, but the whole team contributes.</p>
+
+      <div class="team-grid">
+        <div class="team-card lead">
+          <div class="team-name">Gene Thompson, CFP®, RICP</div>
+          <div class="team-role">Lead Planner · Point of Contact</div>
+          <p class="team-desc">The person who knows your plan inside and out. Leads every planning conversation and is your main point of contact when something comes up.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-name">Chris Haigh, CFP®, RICP</div>
+          <div class="team-role">CEO · Financial Advisor</div>
+          <p class="team-desc">Sets the firm's direction and stays close to client relationships. Around for the bigger-picture conversations.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-name">Jack Hills</div>
+          <div class="team-role">Portfolio Manager</div>
+          <p class="team-desc">Runs the investment side day-to-day. The rebalancing, the tax-loss harvesting, the moves inside the portfolio.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-name">Matt Scott</div>
+          <div class="team-role">Planning Support · Behind the Scenes</div>
+          <p class="team-desc">Supports the planning work and helps keep everything moving behind the scenes.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-name">Stephanie Nemechek</div>
+          <div class="team-role">Scheduling · Paperwork · Follow-Through</div>
+          <p class="team-desc">The person who makes sure nothing stalls. Scheduling, paperwork, follow-through. It's handled before you have to ask.</p>
+        </div>
+        <div class="team-card">
+          <div class="team-name">Your CPA</div>
+          <div class="team-role">Coordinated, Not Replaced</div>
+          <p class="team-desc">We work alongside Emerald Tax (and any S-Corp preparer you keep). We don't file your returns — we make sure every planning move shows up on them correctly.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Side-by-side Compare ===== -->
+    <section id="compare">
+      <span class="eyebrow">Engagement Options</span>
+      <h2 class="section-title">Project vs. Premier — apples to apples.</h2>
+      <p class="section-lede">Both options deliver the financial plan and the recommendations. Premier executes them — and stays in the loop year after year as your tax situation, business, and family evolve.</p>
+
+      <div class="compare-table">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Project</th>
+              <th class="recommended">GWM Premier</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="section-header"><td colspan="3">Included in both</td></tr>
+            <tr><td>Financial plan & recommendations</td><td class="center"><span class="check">✓</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
+            <tr><td>Right Capital build & monitoring</td><td class="center"><span class="check">✓</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
+            <tr><td>2025 amendment coordination</td><td class="center"><span class="check">✓</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
+            <tr><td>S-Corp salary & profit-sharing analysis</td><td class="center"><span class="check">✓</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
+            <tr><td>Insurance review & gap analysis</td><td class="center"><span class="check">✓</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
+            <tr><td>Estate plan review</td><td class="center"><span class="check">✓</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
+            <tr><td>Coordination with your CPA</td><td class="center"><span class="check">✓</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
+
+            <tr class="section-header"><td colspan="3">Duration & access</td></tr>
+            <tr><td>Engagement duration</td><td class="center">12 months</td><td class="center col-recommended">Ongoing</td></tr>
+            <tr><td>CFP® email support</td><td class="center">During engagement</td><td class="center col-recommended">Ongoing</td></tr>
+            <tr><td>Review meetings</td><td class="center">Up to 3</td><td class="center col-recommended">4 per year</td></tr>
+
+            <tr class="section-header"><td colspan="3">Only in Premier</td></tr>
+            <tr><td>Portfolio implementation & management</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
+            <tr><td>Quarterly rebalancing & drift monitoring</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
+            <tr><td>Tax-loss harvesting</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
+            <tr><td>Multi-year Roth conversion implementation</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
+            <tr><td>Distribution strategy planning</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
+            <tr><td>Annual tax projections & coordination</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended"><span class="check">✓</span></td></tr>
+            <tr><td>Tax-prep credit</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended">$450/yr</td></tr>
+
+            <tr class="section-header"><td colspan="3">Investment</td></tr>
+            <tr><td>Year 1 fee</td><td class="center">$7,500 (one-time)</td><td class="center col-recommended">$9,000</td></tr>
+            <tr><td>Year 2+ planning fee</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended">Waived at $1M AUM*</td></tr>
+            <tr><td>AUM fee</td><td class="center"><span class="dash">·</span></td><td class="center col-recommended">0.90% under $2M</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top: 14px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; color: var(--color-text-muted); line-height: 1.6;">
+        * Year 2+ planning fee is waived once AUM crosses $1M. Restored only if the engagement scope materially expands (e.g., a separate business engagement layered on top of household planning).
+      </p>
+    </section>
+
+    <!-- ===== Next steps ===== -->
+    <section id="next">
+      <span class="eyebrow">Next Steps</span>
+      <h2 class="section-title">If this lands, here's how we start.</h2>
+      <p class="section-lede">Two steps. Both move fast.</p>
+
+      <div class="steps two-up">
+        <div class="step">
+          <div class="step-num">1</div>
+          <h4>Sign the financial planning agreement.</h4>
+          <p>We send the engagement letter and onboarding invoice. Once signed and the invoice is paid, we initiate the 2025 amendment workstream within the first 14 days.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <h4>Schedule your welcome call.</h4>
+          <p>You'll meet the full team, set communication preferences, and we'll walk you through the onboarding checklist together — accounts, documents, and the first 90 days of work.</p>
+        </div>
+      </div>
+
+      <div class="closing">
+        <div class="closing-eyebrow">From Chris</div>
+        <p>Andrew, what struck me on our first call was how clearly you already know the answer — you don't want to go back to advertising, and the work to keep it that way is mostly already done. You and Janelle had a remarkable 2025: marriage, the salary fix, $44K into retirement accounts, $171K of business value built. Right Capital now projects a <strong style="color:var(--color-accent-aqua)">$73.7M tax-adjusted advantage</strong> over the planning horizon when we coordinate the plan instead of leaving it on autopilot. The job ahead isn't fixing what's broken. It's catching the $29K the IRS owes you back, layering the 2026 stack, and deploying what's already been earned. We'd love to be the team that does it.</p>
+        <div class="signature">— Chris Haigh, CEO · Iconoclastic Capital Management</div>
+      </div>
+
+      <div class="proposal-footer">
+        Iconoclastic Capital Management · 17 Prince St, Rochester NY 14607 · <a href="mailto:chris@iconocapital.com">chris@iconocapital.com</a> · 585-813-7197<br>
+        Iconoclastic is a fee-only, fiduciary registered investment adviser. Past performance is no guarantee of future results. All projections herein are illustrative and based on data provided by the client and assumptions described in the accompanying Right Capital report. A copy of our Form ADV is available upon request.
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  const body = document.body;
+
+  /* -------- Engagement toggle -------- */
+  const toggle = document.getElementById('toggle');
+  const buttons = toggle.querySelectorAll('button[data-opt]');
+  const priceKind = document.getElementById('priceKind');
+  const priceAmount = document.getElementById('priceAmount');
+  const priceUnit = document.getElementById('priceUnit');
+  const priceBasis = document.getElementById('priceBasis');
+  const panelFeatures = document.getElementById('panelFeatures');
+  const mobileStickyLabel = document.getElementById('mobileStickyLabel');
+  const mobileStickyAmount = document.getElementById('mobileStickyAmount');
+
+  const PRICING = {
+    project: {
+      kind: 'One-time engagement',
+      amount: '$7,500',
+      unit: 'one-time',
+      basis: '<strong>$7,500</strong> flat fee for a 12-month engagement covering the financial plan, the 2025 amendment coordination, and recommendations on the 2026 tax stack. You implement what we design. No AUM fee.',
+      features: [
+        'Full financial plan & Right Capital build',
+        '2025 amendment coordination',
+        'S-Corp salary & profit-sharing analysis',
+        'Roth-to-Traditional 403(b) recommendation',
+        'Cash deployment framework (you execute)',
+        'Up to 3 review meetings over 12 months'
+      ],
+      stickyLabel: 'Project Engagement',
+      stickyAmount: '$7,500 one-time'
+    },
+    premier: {
+      kind: 'Ongoing advisory',
+      amount: '$9,000',
+      unit: 'Year 1 + 0.90% AUM',
+      basis: '<strong>$9,000</strong> Year 1 planning fee. <strong>Year 2+ planning fee waived</strong> once AUM crosses $1M (which the cash deployment puts you over almost immediately). Plus <strong>0.90%</strong> on assets we manage. The <strong>$73.7M lifetime delta</strong> Right Capital projects makes the annual fee a rounding error.',
+      features: [
+        'Active multi-year tax planning, including the 2025 amendment workflow',
+        'Portfolio implementation across all four retirement accounts',
+        'S-Corp coordination — salary sizing, profit-sharing, basis tracking',
+        'Roth strategy: backdoor for both, mega-backdoor capacity review',
+        'Quarterly rebalancing, drift monitoring, and tax-loss harvesting',
+        'Plan Premier tax-prep credit ($450/yr)'
+      ],
+      stickyLabel: 'Guided Wealth Premier',
+      stickyAmount: '$9,000 + 0.90% AUM'
+    }
+  };
+
+  function selectOption(opt) {
+    toggle.setAttribute('data-active', opt);
+    body.setAttribute('data-selected', opt);
+    buttons.forEach(b => {
+      const isActive = b.dataset.opt === opt;
+      b.classList.toggle('active', isActive);
+      b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+    const p = PRICING[opt];
+    priceKind.textContent = p.kind;
+    priceAmount.textContent = p.amount;
+    priceUnit.textContent = p.unit;
+    priceBasis.innerHTML = p.basis;
+    panelFeatures.innerHTML = p.features.map(f => `<li>${f}</li>`).join('');
+    if (mobileStickyLabel) mobileStickyLabel.textContent = p.stickyLabel;
+    if (mobileStickyAmount) mobileStickyAmount.textContent = p.stickyAmount;
+
+    /* Show the "Recommended" pill only on premier */
+    const pill = document.querySelector('.recommended-pill');
+    if (pill) pill.style.display = (opt === 'premier') ? '' : 'none';
+  }
+  buttons.forEach(b => b.addEventListener('click', () => selectOption(b.dataset.opt)));
+
+  /* -------- Counter animation -------- */
+  function animateCount(el) {
+    const target = parseFloat(el.dataset.count);
+    const prefix = el.dataset.prefix || '';
+    const suffix = el.dataset.suffix || '';
+    const format = el.dataset.format || '';
+    const duration = 1500;
+    const start = performance.now();
+    const startVal = 0;
+
+    function tick(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const val = startVal + (target - startVal) * eased;
+
+      let display;
+      if (format === 'dollar-k') {
+        display = prefix + (val / 1000).toFixed(1) + 'K' + suffix;
+      } else {
+        const rounded = target < 100 ? val.toFixed(1) : Math.round(val);
+        display = prefix + rounded + suffix;
+      }
+      el.textContent = display;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  const counters = document.querySelectorAll('[data-count]');
+  const countObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.animated) {
+        entry.target.dataset.animated = '1';
+        animateCount(entry.target);
+        countObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  counters.forEach(c => countObs.observe(c));
+
+  /* -------- Bar fill animation -------- */
+  const bars = document.querySelectorAll('.bar-fill');
+  const barObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.animated) {
+        entry.target.dataset.animated = '1';
+        const w = entry.target.dataset.width;
+        setTimeout(() => { entry.target.style.width = w + '%'; }, 120);
+        barObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  bars.forEach(b => barObs.observe(b));
+
+  /* -------- Mobile sticky CTA -------- */
+  const panelEl = document.querySelector('.panel');
+  if (panelEl) {
+    const stickyObs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        const isMobile = window.innerWidth <= 960;
+        body.classList.toggle('show-mobile-sticky', isMobile && !entry.isIntersecting);
+      });
+    }, { threshold: 0, rootMargin: '-80px 0px 0px 0px' });
+    stickyObs.observe(panelEl);
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 960) body.classList.remove('show-mobile-sticky');
+    });
+  }
+
+})();
+</script>
+
+</body>
+</html>
